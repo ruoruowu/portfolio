@@ -1,0 +1,121 @@
+.hero {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 24px 32px 72px;
+}
+
+.heading {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 44px;
+  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+}
+
+.bio {
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--ink-700);
+  max-width: 620px;
+  margin: 0 0 28px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: #ffffff;
+  background: var(--teal-700);
+  border-radius: 8px;
+  padding: 12px 24px;
+  transition:
+    background var(--dur-standard) var(--ease-standard),
+    transform var(--dur-standard) var(--ease-standard);
+}
+
+.button:hover {
+  background: var(--teal-900);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--ink-900);
+  outline-offset: 2px;
+}
+
+.testimonials {
+  background: var(--teal-100);
+  padding: 64px 0 80px;
+}
+
+.testimonialsInner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.testimonialsLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--teal-700);
+  margin-bottom: 28px;
+}
+
+.testimonialGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.testimonial {
+  background: var(--bg-raised);
+  border: 1px solid var(--teal-300);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.testimonialQuote {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-900);
+}
+
+.testimonialQuote::before {
+  content: "\201C";
+  color: var(--coral-500);
+  font-family: var(--font-display), sans-serif;
+}
+
+.testimonialQuote::after {
+  content: "\201D";
+  color: var(--coral-500);
+  font-family: var(--font-display), sans-serif;
+}
+
+.testimonialAttribution {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-500);
+}
+
+@media (max-width: 640px) {
+  .heading {
+    font-size: 32px;
+  }
+
+  .testimonialGrid {
+    grid-template-columns: 1fr;
+  }
+}

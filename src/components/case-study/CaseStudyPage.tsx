@@ -1,0 +1,129 @@
+import type { ReactNode } from "react";
+import Link from "next/link";
+import Nav from "@/components/Nav";
+import styles from "./CaseStudyPage.module.css";
+
+export interface CaseStudyData {
+  badge: string;
+  badgeTone: "coral" | "teal";
+  title: string;
+  roleLine: string;
+  roleChips: string[];
+  stats?: { value: string; label: string }[];
+  situation: {
+    business: { icon: ReactNode; heading: string; text: string };
+    user: { icon: ReactNode; heading: string; text: string };
+  };
+  quote: string;
+  decisions: { heading: string; text: string }[];
+  learnings?: string[];
+  closingLabel: string;
+  closingText: string;
+  cta: { href: string; label: string };
+}
+
+export default function CaseStudyPage({ data }: { data: CaseStudyData }) {
+  return (
+    <>
+      <Nav active="Portfolio" />
+
+      <header className={styles.header}>
+        <span className={`${styles.badge} ${styles[data.badgeTone]}`}>
+          {data.badge}
+        </span>
+        <h1 className={styles.title}>{data.title}</h1>
+        <p className={styles.roleLine}>{data.roleLine}</p>
+        <div className={styles.chips}>
+          {data.roleChips.map((chip) => (
+            <span key={chip} className={styles.chip}>
+              {chip}
+            </span>
+          ))}
+        </div>
+
+        {data.stats && (
+          <div className={styles.stats}>
+            {data.stats.map((stat) => (
+              <div key={stat.label} className={styles.stat}>
+                <div className={styles.statValue}>{stat.value}</div>
+                <div className={styles.statLabel}>{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <section className={styles.situationBand}>
+        <div className={styles.situationInner}>
+          <div className={styles.situationLabel}>The situation</div>
+          <div className={styles.situationGrid}>
+            <div className={styles.problem}>
+              <div className={styles.problemIcon}>
+                {data.situation.business.icon}
+              </div>
+              <h3 className={styles.problemHeading}>
+                {data.situation.business.heading}
+              </h3>
+              <p className={styles.problemText}>
+                {data.situation.business.text}
+              </p>
+            </div>
+            <div className={styles.problem}>
+              <div className={styles.problemIcon}>
+                {data.situation.user.icon}
+              </div>
+              <h3 className={styles.problemHeading}>
+                {data.situation.user.heading}
+              </h3>
+              <p className={styles.problemText}>{data.situation.user.text}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.quoteSection}>
+        <p className={styles.quote}>{data.quote}</p>
+      </section>
+
+      <section className={styles.decisions}>
+        {data.decisions.map((decision, i) => (
+          <div
+            key={decision.heading}
+            className={`${styles.decision} ${i % 2 === 1 ? styles.reverse : ""}`}
+          >
+            <div className={styles.numeral} aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </div>
+            <div className={styles.decisionContent}>
+              <h2 className={styles.decisionHeading}>{decision.heading}</h2>
+              <p className={styles.decisionText}>{decision.text}</p>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {data.learnings && (
+        <section className={styles.learningsSection}>
+          <div className={styles.learningsLabel}>What I learned</div>
+          <div className={styles.learningsList}>
+            {data.learnings.map((item) => (
+              <p key={item} className={styles.learningItem}>
+                {item}
+              </p>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className={styles.closingBand}>
+        <div className={styles.closingInner}>
+          <div className={styles.closingLabel}>{data.closingLabel}</div>
+          <p className={styles.closingText}>{data.closingText}</p>
+          <Link href={data.cta.href} className={styles.button}>
+            {data.cta.label}
+          </Link>
+        </div>
+      </section>
+    </>
+  );
+}

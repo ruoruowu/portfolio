@@ -12,7 +12,7 @@ const CASES: CaseCardProps[] = [
     title: "Expedia Group: Partnerships",
     description:
       "Optimized and launched new end-to-end corporate partnership booking experiences for 200+ brands, driving $8.2M in annualized revenue.",
-    href: "#",
+    href: "/case-studies/partnerships",
   },
   {
     tags: [
@@ -22,8 +22,8 @@ const CASES: CaseCardProps[] = [
     ],
     title: "Expedia Group: Communications",
     description:
-      "Owned end-to-end in-app, push, and email communications strategy for 25M travelers, generating $16M gross profit through retention and cross-sell initiatives.",
-    href: "#",
+      "Owned end-to-end in-app, push, and email communications strategy, generating $15.6M annual gross profit and a 2.78% lift in app downloads.",
+    href: "/case-studies/communications",
   },
   {
     tags: [
@@ -33,8 +33,8 @@ const CASES: CaseCardProps[] = [
     ],
     title: "Expedia Group: Connected Profiles",
     description:
-      "Led 0-to-1 social feature design to increase conversion from discovery to booking, combining user research, rapid prototyping, and cross-functional alignment.",
-    href: "#",
+      "Led 0-to-1 social feature design connecting travelers with friends and family, driving a 2–3x increase in hotel saves and conversion.",
+    href: "/case-studies/connected-profiles",
   },
   {
     tags: [
