@@ -4,8 +4,10 @@ import styles from "./Nav.module.css";
 const LINKS = [
   { href: "/", label: "Portfolio" },
   { href: "/about", label: "About" },
-  { href: "/resume", label: "Resume" },
 ];
+
+const RESUME_URL =
+  "https://drive.google.com/file/d/19c-5to9HqjLQBd3r6vBzh1wz7jB_bamF/view?usp=sharing";
 
 export default function Nav({ active = "Portfolio" }: { active?: string }) {
   return (
@@ -23,6 +25,9 @@ export default function Nav({ active = "Portfolio" }: { active?: string }) {
             {link.label}
           </Link>
         ))}
+        <a href={RESUME_URL} target="_blank" rel="noopener noreferrer">
+          Resume
+        </a>
       </div>
     </nav>
   );

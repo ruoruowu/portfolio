@@ -34,7 +34,12 @@ export default function About() {
           passionate about building experiences that meaningfully connect
           people through thoughtful digital design.
         </p>
-        <a href="#" className={styles.button}>
+        <a
+          href="https://drive.google.com/file/d/19c-5to9HqjLQBd3r6vBzh1wz7jB_bamF/view?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.button}
+        >
           My Resume
         </a>
       </section>

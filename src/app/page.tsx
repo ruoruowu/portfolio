@@ -90,8 +90,20 @@ export default function Home() {
             founding designer of Paper Tots.
           </p>
           <div className={styles.heroLinks}>
-            <a href="#">Resume</a>
-            <a href="#">LinkedIn</a>
+            <a
+              href="https://drive.google.com/file/d/19c-5to9HqjLQBd3r6vBzh1wz7jB_bamF/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Resume
+            </a>
+            <a
+              href="https://www.linkedin.com/in/ruochenwu/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
             <a href="#">Paper Tots</a>
           </div>
         </div>
