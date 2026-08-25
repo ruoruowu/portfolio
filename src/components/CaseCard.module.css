@@ -1,6 +1,6 @@
 .case {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 36px;
   align-items: center;
 }
@@ -76,13 +76,13 @@
 }
 
 .tag.coral {
-  background: var(--coral-100);
-  color: var(--coral-700);
+  background: var(--teal-300);
+  color: var(--teal-900);
 }
 
 .tag.cream {
-  background: var(--cream-100);
-  color: var(--cream-700);
+  background: var(--teal-700);
+  color: var(--paper);
 }
 
 .title {
@@ -98,7 +98,6 @@
   line-height: 1.6;
   color: var(--ink-700);
   margin: 0 0 14px;
-  max-width: 460px;
 }
 
 .link {
