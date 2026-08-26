@@ -13,6 +13,10 @@ export const metadata: Metadata = {
 const data: CaseStudyData = {
   badge: "Shipped",
   badgeTone: "teal",
+  heroImage: {
+    src: "/partnerships/header.png",
+    alt: "Expedia partnership experiences on phone, laptop, and tablet: a United membership prompt, a Comet by Perplexity One Key upgrade page, and a coupon-applied hotel search.",
+  },
   title: "Expedia Group: Partnerships",
   roleLine:
     "Expedia Group has 200+ corporate partners with co-branded shopping experiences. I redesigned the end-to-end partnership flow to grow users and improve conversion.",
@@ -57,6 +61,39 @@ const data: CaseStudyData = {
     {
       heading: "Designing for exception cases in deal-based shopping",
       text: "Reassurance visuals across key shopping touchpoints tested a 2% conversion gain, but the flow carried real business and legal nuance, like travelers not being able to combine cashback and coupons. I aligned Pay Now as the default path across Home, Shopping, and Checkout teams, keeping coupon messaging subtle rather than competing with the primary CTA, and designed conditional offer tiers that encouraged higher-value bookings without overcomplicating the pricing math.",
+    },
+  ],
+  references: [
+    {
+      src: "/partnerships/home cover.png",
+      alt: "Partner logo stack and home cover",
+      label: "Home page alignment with partner brand treatments and search entry points.",
+      wide: true,
+    },
+    {
+      src: "/partnerships/Web layout standardization.png",
+      alt: "Web layout standardization reference",
+      label: "Standardized web patterns for offer clarity and consistent search behavior.",
+    },
+    {
+      src: "/partnerships/AI web builder.png",
+      alt: "AI landing page builder reference",
+      label: "AI-assisted partner landing page builder for faster launch cycles.",
+    },
+    {
+      src: "/partnerships/End to end shopping flow.png",
+      alt: "End to end shopping flow reference",
+      label: "End-to-end booking flow showing offer reveal, checkout, and trust moments.",
+    },
+    {
+      src: "/partnerships/Ticketmastser walk.png",
+      alt: "Ticketmaster walk reference",
+      label: "Ticketmaster path: iterative walk design for improving conversion confidence.",
+    },
+    {
+      src: "/partnerships/Ticketmastser run.png",
+      alt: "Ticketmaster run reference",
+      label: "Ticketmaster run: final integrated flight and event shopping experience.",
     },
   ],
   learnings: [

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
+import Testimonials, { type Testimonial } from "./Testimonials";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
     "Designer, researcher, and product leader building experiences that meaningfully connect people.",
 };
 
-const TESTIMONIALS = [
+const TESTIMONIALS: Testimonial[] = [
   {
     quote:
       "Ruochen's ability to juggle documentation, research, and cross-team outreach to understand the landscape of push notifications within EG is impressive.",
@@ -47,16 +48,7 @@ export default function About() {
       <section className={styles.testimonials}>
         <div className={styles.testimonialsInner}>
           <div className={styles.testimonialsLabel}>Testimonials</div>
-          <div className={styles.testimonialGrid}>
-            {TESTIMONIALS.map((t) => (
-              <div key={t.attribution} className={styles.testimonial}>
-                <p className={styles.testimonialQuote}>{t.quote}</p>
-                <p className={styles.testimonialAttribution}>
-                  {t.attribution}
-                </p>
-              </div>
-            ))}
-          </div>
+          <Testimonials items={TESTIMONIALS} />
         </div>
       </section>
     </>

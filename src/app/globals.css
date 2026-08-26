@@ -26,6 +26,9 @@
   --action-hover: var(--teal-900);
   --border-hairline: var(--ink-200);
   --radius-card: 12px;
+  /* One page container, so every section's left/right edge lines up with the nav. */
+  --page-max: 980px;
+  --page-gutter: 32px;
   --space-unit: 4px;
   --dur-standard: 180ms;
   --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);

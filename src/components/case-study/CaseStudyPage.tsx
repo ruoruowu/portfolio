@@ -1,11 +1,20 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
+import ParallaxHero from "./ParallaxHero";
 import styles from "./CaseStudyPage.module.css";
+
+export interface CaseStudyReference {
+  src: string;
+  alt: string;
+  label?: string;
+  wide?: boolean;
+}
 
 export interface CaseStudyData {
   badge: string;
   badgeTone: "coral" | "teal";
+  heroImage?: { src: string; alt: string };
   title: string;
   roleLine: string;
   roleChips: string[];
@@ -16,6 +25,7 @@ export interface CaseStudyData {
   };
   quote: string;
   decisions: { heading: string; text: string }[];
+  references?: CaseStudyReference[];
   learnings?: string[];
   closingLabel: string;
   closingText: string;
@@ -23,35 +33,45 @@ export interface CaseStudyData {
 }
 
 export default function CaseStudyPage({ data }: { data: CaseStudyData }) {
+  const intro = (
+    <>
+      <span className={`${styles.badge} ${styles[data.badgeTone]}`}>
+        {data.badge}
+      </span>
+      <h1 className={styles.title}>{data.title}</h1>
+      <p className={styles.roleLine}>{data.roleLine}</p>
+      <div className={styles.chips}>
+        {data.roleChips.map((chip) => (
+          <span key={chip} className={styles.chip}>
+            {chip}
+          </span>
+        ))}
+      </div>
+
+      {data.stats && (
+        <div className={styles.stats}>
+          {data.stats.map((stat) => (
+            <div key={stat.label} className={styles.stat}>
+              <div className={styles.statValue}>{stat.value}</div>
+              <div className={styles.statLabel}>{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+
   return (
     <>
       <Nav active="Portfolio" />
 
-      <header className={styles.header}>
-        <span className={`${styles.badge} ${styles[data.badgeTone]}`}>
-          {data.badge}
-        </span>
-        <h1 className={styles.title}>{data.title}</h1>
-        <p className={styles.roleLine}>{data.roleLine}</p>
-        <div className={styles.chips}>
-          {data.roleChips.map((chip) => (
-            <span key={chip} className={styles.chip}>
-              {chip}
-            </span>
-          ))}
-        </div>
-
-        {data.stats && (
-          <div className={styles.stats}>
-            {data.stats.map((stat) => (
-              <div key={stat.label} className={styles.stat}>
-                <div className={styles.statValue}>{stat.value}</div>
-                <div className={styles.statLabel}>{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </header>
+      {data.heroImage ? (
+        <ParallaxHero src={data.heroImage.src} alt={data.heroImage.alt}>
+          {intro}
+        </ParallaxHero>
+      ) : (
+        <header className={styles.header}>{intro}</header>
+      )}
 
       <section className={styles.situationBand}>
         <div className={styles.situationInner}>
@@ -101,6 +121,25 @@ export default function CaseStudyPage({ data }: { data: CaseStudyData }) {
           </div>
         ))}
       </section>
+
+      {data.references && data.references.length > 0 && (
+        <section className={styles.referencesSection}>
+          <div className={styles.referencesHeader}>Selected references</div>
+          <div className={styles.referenceGrid}>
+            {data.references.map((item) => (
+              <figure
+                key={item.src}
+                className={`${styles.referenceCard} ${item.wide ? styles.wide : ""}`}
+              >
+                <img src={item.src} alt={item.alt} className={styles.referenceImage} />
+                {item.label && (
+                  <figcaption className={styles.referenceLabel}>{item.label}</figcaption>
+                )}
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
 
       {data.learnings && (
         <section className={styles.learningsSection}>

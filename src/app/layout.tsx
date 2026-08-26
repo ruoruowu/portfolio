@@ -34,8 +34,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${gabarito.variable} ${hankenGrotesk.variable} ${jetbrainsMono.variable}`}
+      /* The inline script below adds a class here before React hydrates. */
+      suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body>
+        {/*
+          Runs before any of the page below it is parsed, so scroll-triggered
+          animations can safely hide their starting state without a flash of the
+          finished one. Without JS the class never lands and every section
+          renders fully drawn.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add("js")`,
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

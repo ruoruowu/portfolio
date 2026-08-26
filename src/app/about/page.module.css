@@ -1,7 +1,7 @@
 .hero {
-  max-width: 780px;
+  max-width: var(--page-max);
   margin: 0 auto;
-  padding: 24px 32px 72px;
+  padding: 24px var(--page-gutter) 72px;
 }
 
 .heading {
@@ -55,9 +55,9 @@
 }
 
 .testimonialsInner {
-  max-width: 780px;
+  max-width: var(--page-max);
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 var(--page-gutter);
 }
 
 .testimonialsLabel {
@@ -70,44 +70,212 @@
   margin-bottom: 28px;
 }
 
-.testimonialGrid {
+.bubbleGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  gap: 40px 48px;
 }
 
-.testimonial {
-  background: var(--bg-raised);
-  border: 1px solid var(--teal-300);
-  border-radius: var(--radius-card);
-  padding: 28px;
+.bubbleItem {
+  /* Second bubble is drawn a beat after the first, like one hand doing both. */
+  --stagger: calc(var(--i) * 260ms);
+  --accent: var(--coral-500);
+  --tilt: -0.9deg;
+
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  margin: 0;
 }
 
-.testimonialQuote {
+.bubbleItem:nth-child(even) {
+  --accent: var(--teal-700);
+  --tilt: 1deg;
+}
+
+.bubble {
+  position: relative;
+  flex: 1;
+  /* Clears the drawn contour: it sits ~9% in at the top and ~18% up from the
+     bottom, where the tail hangs. */
+  padding: 48px 46px 66px 44px;
+  transform: rotate(var(--tilt));
+}
+
+.bubbleInk {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.paper {
+  fill: var(--bg-raised);
+}
+
+.strokeMain,
+.strokeSecond {
+  fill: none;
+  stroke: var(--ink-900);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.strokeMain {
+  stroke-width: 2.4;
+}
+
+.strokeSecond {
+  stroke-width: 1.2;
+  opacity: 0.45;
+}
+
+.sparkle path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.bubbleQuote {
+  position: relative;
+  margin: 0;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.62;
   color: var(--ink-900);
 }
 
-.testimonialQuote::before {
+.bubbleQuote::before {
   content: "\201C";
-  color: var(--coral-500);
+  color: var(--accent);
   font-family: var(--font-display), sans-serif;
 }
 
-.testimonialQuote::after {
+.bubbleQuote::after {
   content: "\201D";
-  color: var(--coral-500);
+  color: var(--accent);
   font-family: var(--font-display), sans-serif;
 }
 
-.testimonialAttribution {
+.bubbleAttribution {
+  /* Sits under the tail, so the bubble reads as pointing at the speaker. */
+  margin: 6px 0 0 76px;
   font-size: 13px;
   font-weight: 500;
   color: var(--ink-500);
+}
+
+/*
+ * Starting state, applied only once the js flag lands (see the root layout) so
+ * a scripting-free visit still shows finished bubbles.
+ */
+:global(html.js) .strokeMain,
+:global(html.js) .strokeSecond,
+:global(html.js) .sparkle path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+:global(html.js) .paper,
+:global(html.js) .bubbleQuote,
+:global(html.js) .bubbleAttribution {
+  opacity: 0;
+}
+
+:global(html.js) .sparkle {
+  transform: scale(0.4);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+/* The pen: outline first, then the paper behind it, then the words. */
+.drawn .strokeMain {
+  animation: sketch 1000ms calc(var(--stagger)) cubic-bezier(0.55, 0, 0.3, 1)
+    forwards;
+}
+
+.drawn .strokeSecond {
+  animation: sketch 900ms calc(var(--stagger) + 170ms)
+    cubic-bezier(0.55, 0, 0.3, 1) forwards;
+}
+
+.drawn .paper {
+  animation: fade 420ms calc(var(--stagger) + 540ms) ease-out forwards;
+}
+
+.drawn .bubbleQuote {
+  animation: rise 520ms calc(var(--stagger) + 700ms) ease-out forwards;
+}
+
+.drawn .bubbleAttribution {
+  animation: rise 460ms calc(var(--stagger) + 900ms) ease-out forwards;
+}
+
+.drawn .sparkle path {
+  animation: sketch 300ms calc(var(--stagger) + 1020ms) ease-out forwards;
+}
+
+.drawn .sparkle {
+  animation: pop 420ms calc(var(--stagger) + 1020ms)
+    cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes sketch {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop {
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html.js) .strokeMain,
+  :global(html.js) .strokeSecond,
+  :global(html.js) .sparkle path {
+    stroke-dashoffset: 0;
+  }
+
+  :global(html.js) .paper,
+  :global(html.js) .bubbleQuote,
+  :global(html.js) .bubbleAttribution {
+    opacity: 1;
+  }
+
+  :global(html.js) .sparkle {
+    transform: none;
+  }
+
+  .drawn .strokeMain,
+  .drawn .strokeSecond,
+  .drawn .paper,
+  .drawn .bubbleQuote,
+  .drawn .bubbleAttribution,
+  .drawn .sparkle,
+  .drawn .sparkle path {
+    animation: none;
+  }
 }
 
 @media (max-width: 640px) {
@@ -115,7 +283,8 @@
     font-size: 32px;
   }
 
-  .testimonialGrid {
+  .bubbleGrid {
     grid-template-columns: 1fr;
+    gap: 32px;
   }
 }

@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 32px;
-  max-width: 980px;
+  padding: var(--page-gutter);
+  max-width: var(--page-max);
   margin: 0 auto;
 }
 

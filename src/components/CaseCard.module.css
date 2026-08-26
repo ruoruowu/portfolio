@@ -1,8 +1,22 @@
 .case {
+  --gap: 36px;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 36px;
+  gap: var(--gap);
   align-items: center;
+}
+
+.content {
+  /*
+   * Pulls the clip edge left onto the visual's right edge, so the copy slides
+   * out from behind the card instead of appearing out of empty gutter. The
+   * padding puts the text back where the grid column had it.
+   */
+  margin-left: calc(var(--gap) * -1);
+  padding-left: var(--gap);
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .visual {
@@ -100,7 +114,12 @@
   margin: 0 0 14px;
 }
 
+.linkRow {
+  display: block;
+}
+
 .link {
+  display: inline-block;
   font-size: 14px;
   font-weight: 500;
   color: var(--teal-700);
@@ -114,8 +133,102 @@
   border-color: var(--teal-900);
 }
 
+
+/*
+ * Starting state, applied only once the js flag lands (see the root layout) so
+ * a scripting-free visit still shows finished cards.
+ */
+:global(html.js) .case {
+  opacity: 0;
+  transform: translateY(34px);
+}
+
+:global(html.js) .content > * {
+  /* Its own width plus the gutter: far enough to sit fully behind the visual. */
+  transform: translateX(calc(-100% - var(--gap)));
+}
+
+.revealed {
+  animation: float-up 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.revealed .content > * {
+  animation: slide-out 950ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Cascades top to bottom, starting once the card has begun settling. */
+.revealed .content > :nth-child(1) {
+  animation-delay: 220ms;
+}
+
+.revealed .content > :nth-child(2) {
+  animation-delay: 290ms;
+}
+
+.revealed .content > :nth-child(3) {
+  animation-delay: 360ms;
+}
+
+.revealed .content > :nth-child(4) {
+  animation-delay: 430ms;
+}
+
+@keyframes float-up {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes slide-out {
+  to {
+    transform: none;
+  }
+}
+
+@keyframes slide-in-short {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html.js) .case,
+  :global(html.js) .content > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  .revealed,
+  .revealed .content > * {
+    animation: none;
+  }
+}
+
 @media (max-width: 720px) {
   .case {
     grid-template-columns: 1fr;
+  }
+
+  /* Stacked, there is no card to the left to emerge from — just a short drift. */
+  .content {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  :global(html.js) .content > * {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+
+  .revealed .content > * {
+    animation-name: slide-in-short;
+    animation-duration: 620ms;
   }
 }
