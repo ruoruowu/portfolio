@@ -8,10 +8,31 @@
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-display), sans-serif;
   font-weight: 600;
   font-size: 18px;
   color: var(--ink-900);
+}
+
+.logo svg {
+  display: block;
+  transition: transform var(--dur-standard) var(--ease-standard);
+}
+
+/* A small tilt on hover — enough to read as clickable, short of a bounce. */
+.logo:hover svg {
+  transform: rotate(-4deg) scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo svg,
+  .logo:hover svg {
+    transition: none;
+    transform: none;
+  }
 }
 
 .links {

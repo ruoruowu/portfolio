@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Logo from "./Logo";
 import styles from "./Nav.module.css";
 
 const LINKS = [
@@ -12,8 +13,10 @@ const RESUME_URL =
 export default function Nav({ active = "Portfolio" }: { active?: string }) {
   return (
     <nav className={styles.nav}>
+      {/* Mark and wordmark are one target, so the whole thing goes home. */}
       <Link href="/" className={styles.logo}>
-        ruochen.wu
+        <Logo size={32} />
+        <span>ruochen.wu</span>
       </Link>
       <div className={styles.links}>
         {LINKS.map((link) => (
