@@ -143,6 +143,11 @@
   transform: translateY(34px);
 }
 
+:global(html.js) .visual {
+  /* Rolled shut against its own left edge. */
+  clip-path: inset(0 100% 0 0 round var(--radius-card));
+}
+
 :global(html.js) .content > * {
   /* Its own width plus the gutter: far enough to sit fully behind the visual. */
   transform: translateX(calc(-100% - var(--gap)));
@@ -152,31 +157,45 @@
   animation: float-up 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/*
+ * One continuous rightward sweep: the card unrolls to its right edge, and the
+ * copy picks the motion up from behind that same edge as it lands. The delays
+ * below are the handoff — retime them together or the sweep breaks in two.
+ */
+.revealed .visual {
+  animation: unroll 780ms 60ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 .revealed .content > * {
   animation: slide-out 950ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Cascades top to bottom, starting once the card has begun settling. */
 .revealed .content > :nth-child(1) {
-  animation-delay: 220ms;
+  animation-delay: 480ms;
 }
 
 .revealed .content > :nth-child(2) {
-  animation-delay: 290ms;
+  animation-delay: 550ms;
 }
 
 .revealed .content > :nth-child(3) {
-  animation-delay: 360ms;
+  animation-delay: 620ms;
 }
 
 .revealed .content > :nth-child(4) {
-  animation-delay: 430ms;
+  animation-delay: 690ms;
 }
 
 @keyframes float-up {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes unroll {
+  to {
+    clip-path: inset(0 0 0 0 round var(--radius-card));
   }
 }
 
@@ -205,7 +224,12 @@
     transform: none;
   }
 
+  :global(html.js) .visual {
+    clip-path: none;
+  }
+
   .revealed,
+  .revealed .visual,
   .revealed .content > * {
     animation: none;
   }
