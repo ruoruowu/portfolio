@@ -1,13 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ru.wu">
-  <rect width="64" height="64" rx="15" fill="#245e5b"/>
-  <g transform="translate(32 32) scale(1.1) translate(-32.5 -31.5)">
-    <g fill="none" stroke="#fff6d9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.5 27V14"/>
-      <path d="M20.5 19.5C20.5 15.5 23.5 14 27 14"/>
-      <path d="M36 14v8.5a4.5 4.5 0 0 0 9 0V14"/>
-      <path d="M12 36l4 13 4-9.5 4 9.5 4-13"/>
-      <path d="M36 36v8.5a4.5 4.5 0 0 0 9 0V36"/>
-    </g>
-    <circle cx="52.75" cy="46.25" r="2.75" fill="#f56743"/>
+  <rect width="64" height="64" rx="15" fill="#4e8f8c"/>
+  <g fill="none" stroke="#fff6d9" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M41.95 10.4V23.6"/>
+    <path d="M41.95 15.4C41.95 12.2 44.5 10.4 47.66 10.4"/>
+    <path d="M41.95 40.4V47.775A5.825 5.825 0 0 0 53.6 47.775V40.4"/>
+    <path d="M10.4 40.4L15.94 53.6L21.48 45.68L27.01 53.6L32.55 40.4"/>
   </g>
 </svg>
