@@ -1,4 +1,5 @@
 import Nav from "@/components/Nav";
+import BlueprintReveal from "@/components/BlueprintReveal";
 import CaseCard, { type CaseCardProps } from "@/components/CaseCard";
 import styles from "./page.module.css";
 
@@ -64,6 +65,7 @@ const CASES: CaseCardProps[] = [
 export default function Home() {
   return (
     <>
+      <BlueprintReveal />
       <Nav active="Portfolio" />
 
       <section className={styles.hero}>
@@ -117,46 +119,46 @@ export default function Home() {
               <path
                 d="M-42,-26 Q-44,-28 -40,-28 L40,-28 Q44,-28 42,-24 L44,24 Q44,28 40,28 L-40,28 Q-44,28 -42,24 Z"
                 fill="none"
-                stroke="#191C1E"
+                stroke="var(--ink-900)"
                 strokeWidth="2"
                 strokeLinejoin="round"
               />
               <path
                 d="M-13,-28 L-13,28"
-                stroke="#191C1E"
+                stroke="var(--ink-900)"
                 strokeWidth="1.2"
                 strokeDasharray="2 5"
               />
-              <circle cx="30" cy="-16" r="5" fill="#C0431F" />
+              <circle cx="30" cy="-16" r="5" fill="var(--coral-700)" />
             </g>
             <g transform="translate(260,70) rotate(5)">
               <path
                 d="M-40,-21 Q-43,-23 -39,-24 L37,-25 Q42,-24 41,-18 L42,9 Q41,15 35,15 L-7,16 L-19,30 L-17,15 L-37,15 Q-42,14 -40,8 Z"
                 fill="none"
-                stroke="#191C1E"
+                stroke="var(--ink-900)"
                 strokeWidth="2"
                 strokeLinejoin="round"
               />
-              <circle cx="26" cy="0" r="5" fill="#245E5B" />
+              <circle cx="26" cy="0" r="5" fill="var(--teal-700)" />
             </g>
             <g transform="translate(180,210) rotate(-3)">
               <path
                 d="M-20,0 Q-22,4 -18,6 L-5,17 Q-1,19 1,15 L22,-19"
                 fill="none"
-                stroke="#191C1E"
+                stroke="var(--ink-900)"
                 strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <circle cx="26" cy="-22" r="5" fill="#8A6A12" />
+              <circle cx="26" cy="-22" r="5" fill="var(--cream-700)" />
             </g>
           </svg>
         </div>
       </section>
 
       <section className={styles.cases}>
-        {CASES.map((c) => (
-          <CaseCard key={c.title} {...c} />
+        {CASES.map((c, i) => (
+          <CaseCard key={c.title} {...c} plate={i + 1} />
         ))}
       </section>
 
@@ -169,12 +171,12 @@ export default function Home() {
           <path
             d="M12,42 Q10,46 14,48 L24,54 Q28,56 30,52 L48,18"
             fill="none"
-            stroke="#191C1E"
+            stroke="var(--ink-900)"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <circle cx="50" cy="14" r="4" fill="#C0431F" />
+          <circle cx="50" cy="14" r="4" fill="var(--coral-700)" />
         </svg>
         <p>
           Off the clock, I draw and take photos.{" "}

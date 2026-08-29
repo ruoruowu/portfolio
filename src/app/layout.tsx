@@ -23,6 +23,48 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+/*
+ * Runs before any of the page below it is parsed, so scroll-triggered
+ * animations can safely hide their starting state without a flash of the
+ * finished one. Without JS the class never lands and every section renders
+ * fully drawn.
+ *
+ * The blueprint sequence lives here in full rather than in a React effect. The
+ * attribute that puts Home into its drawn state is set by this script, so the
+ * code that clears it has to be this script too — when removal depended on a
+ * component mounting, a bundle that failed or arrived late left the page teal
+ * for good. Nothing below needs React, hydration, or even the rest of the page.
+ */
+const HOLD = 520; // the finished drawing holds before colour starts arriving
+const RESOLVE = 2600; // last block's delay (2220ms) plus its own transition
+/*
+ * Belt and braces. The two timers above always finish inside two seconds, so
+ * this one should never be the one that fires — it is here so that no failure
+ * above it can leave the sheet up permanently.
+ */
+const NEVER_LONGER_THAN = 20000;
+
+const BOOT = `
+document.documentElement.classList.add("js");
+(function () {
+  var r = document.documentElement;
+  var seen = false, reduce = false;
+  try { seen = !!sessionStorage.getItem("bp-home"); } catch (e) {}
+  try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  if (location.pathname !== "/" || seen || reduce) return;
+  // Storage being unavailable is not a reason to withhold the drawing; it only
+  // means this visitor may see it again next time.
+  try { sessionStorage.setItem("bp-home", "1"); } catch (e) {}
+  r.setAttribute("data-bp", "draft");
+  var done = function () { r.removeAttribute("data-bp"); };
+  setTimeout(function () {
+    if (r.getAttribute("data-bp") === "draft") r.setAttribute("data-bp", "resolving");
+  }, ${HOLD});
+  setTimeout(done, ${HOLD + RESOLVE});
+  setTimeout(done, ${NEVER_LONGER_THAN});
+})();
+`;
+
 export const metadata: Metadata = {
   title: "Ruochen Wu — Portfolio",
   description:
@@ -38,17 +80,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body>
-        {/*
-          Runs before any of the page below it is parsed, so scroll-triggered
-          animations can safely hide their starting state without a flash of the
-          finished one. Without JS the class never lands and every section
-          renders fully drawn.
-        */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `document.documentElement.classList.add("js")`,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: BOOT }} />
         {children}
       </body>
     </html>

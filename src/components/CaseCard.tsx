@@ -12,6 +12,8 @@ export interface CaseCardProps {
   description: string;
   href: string;
   status?: "wip";
+  /** Plate number for the blueprint reveal's callout bubble. Decorative. */
+  plate?: number;
 }
 
 export default function CaseCard({
@@ -20,6 +22,7 @@ export default function CaseCard({
   description,
   href,
   status,
+  plate,
 }: CaseCardProps) {
   const { ref, inView } = useInView<HTMLDivElement>(0.25);
 
@@ -28,6 +31,11 @@ export default function CaseCard({
       ref={ref}
       className={`${styles.case} ${inView ? styles.revealed : ""}`}
     >
+      {plate !== undefined && (
+        <span className={styles.plate} aria-hidden="true">
+          {plate}
+        </span>
+      )}
       <div className={`${styles.visual} ${status === "wip" ? styles.wip : ""}`}>
         {status === "wip" ? (
           <span className={styles.wipLabel}>In active development</span>

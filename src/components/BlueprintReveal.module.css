@@ -1,0 +1,181 @@
+/*
+ * The drafting furniture: grid, sheet border, column bubbles, dimension string
+ * and title block. All of it is overlay only — it never occupies layout, so the
+ * finished page underneath is already at its final position while the drawing
+ * is still up.
+ */
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  font-family: var(--font-mono), monospace;
+  color: var(--bp-ink);
+}
+
+:global(html[data-bp="draft"]) .sheet {
+  opacity: 1;
+  visibility: visible;
+}
+
+/*
+ * Retracting the furniture is staged the same way the colour is: the grid was
+ * the first thing drawn, so it is the first thing struck, and the title block —
+ * the sign-off — is the last to go.
+ */
+:global(html[data-bp="resolving"]) .sheet {
+  visibility: visible;
+  opacity: 0;
+  transition:
+    opacity 400ms var(--ease-standard),
+    visibility 0s linear 400ms;
+}
+
+/* Two-tier drafting grid: 96px major over 16px minor. */
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--bp-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--bp-line) 1px, transparent 1px),
+    linear-gradient(to right, var(--bp-faint) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--bp-faint) 1px, transparent 1px);
+  background-size:
+    96px 96px,
+    96px 96px,
+    16px 16px,
+    16px 16px;
+}
+
+/* The sheet border, held off the trim edge the way a drawing's margin is. */
+.frame {
+  position: absolute;
+  inset: 14px;
+  border: 1px solid var(--bp-ink);
+  outline: 1px solid var(--bp-faint);
+  outline-offset: 4px;
+}
+
+.columns {
+  position: absolute;
+  inset: 0 0 0 0;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+  display: flex;
+  justify-content: space-between;
+}
+
+.column {
+  position: relative;
+  width: 0;
+  border-left: 1px dashed var(--bp-line);
+}
+
+/*
+ * The lettered bubble sits on the gridline it names, centred on it — parked in
+ * the band between the nav and the headline so it never lands on either.
+ */
+.bubble {
+  position: absolute;
+  top: 124px;
+  left: 0;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--bp-ink);
+  border-radius: 50%;
+  background: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Dimension line across the page column, with ticks at both ends. */
+.widthDim {
+  position: absolute;
+  top: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(
+    calc(var(--page-max) - var(--page-gutter) * 2),
+    calc(100vw - var(--page-gutter) * 2)
+  );
+  border-top: 1px solid var(--bp-ink);
+  display: flex;
+  justify-content: center;
+}
+
+.widthDim::before,
+.widthDim::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 1px;
+  height: 11px;
+  background: var(--bp-ink);
+}
+
+.widthDim::before {
+  left: 0;
+}
+
+.widthDim::after {
+  right: 0;
+}
+
+.dimValue {
+  transform: translateY(-50%);
+  background: var(--paper);
+  padding: 0 6px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+.titleBlock {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  width: 210px;
+  border: 1px solid var(--bp-ink);
+  background: var(--paper);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--bp-line);
+}
+
+.titleNote {
+  padding: 6px 8px;
+  color: var(--bp-muted);
+}
+
+/* Narrow sheets drop the furniture that has nowhere to sit. */
+@media (max-width: 720px) {
+  .columns,
+  .widthDim,
+  .titleBlock {
+    display: none;
+  }
+}
+
+/*
+ * Reduced motion never reaches the draft phase at all — the inline script skips
+ * it — but the overlay is belt-and-braces hidden here regardless.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    display: none;
+  }
+}

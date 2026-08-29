@@ -138,3 +138,105 @@
     font-size: 36px;
   }
 }
+
+/* ── Blueprint reveal ──────────────────────────────────────────────────────
+   Colour arrives in the drafter's order, top of the sheet down. These delays
+   are the sweep: each element inherits its own --bp-delay, which globals.css
+   feeds into the transition on every descendant.
+
+   They are per element rather than per section on purpose. Grouping the whole
+   hero on one delay meant the entire first screen changed in a single beat,
+   which read as a cut rather than a wash. Steps are shorter than the 260ms
+   transition they trigger, so neighbours overlap and the colour travels down
+   the page as one continuous front.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:global(html[data-bp]) .heading {
+  --bp-delay: 120ms;
+}
+
+:global(html[data-bp]) .subtext {
+  --bp-delay: 300ms;
+}
+
+:global(html[data-bp]) .heroLinks {
+  --bp-delay: 440ms;
+}
+
+:global(html[data-bp]) .heroArt {
+  --bp-delay: 560ms;
+}
+
+/*
+ * Card bases only. Each card spreads its own parts across the 250ms after this
+ * (see CaseCard.module.css), so the steps overlap rather than landing as five
+ * discrete blocks.
+ */
+:global(html[data-bp]) .cases > *:nth-child(1) {
+  --bp-card-delay: 700ms;
+}
+
+:global(html[data-bp]) .cases > *:nth-child(2) {
+  --bp-card-delay: 960ms;
+}
+
+:global(html[data-bp]) .cases > *:nth-child(3) {
+  --bp-card-delay: 1220ms;
+}
+
+:global(html[data-bp]) .cases > *:nth-child(4) {
+  --bp-card-delay: 1480ms;
+}
+
+:global(html[data-bp]) .cases > *:nth-child(5) {
+  --bp-card-delay: 1740ms;
+}
+
+:global(html[data-bp]) .placeholderNote {
+  --bp-delay: 2120ms;
+}
+
+:global(html[data-bp]) .bonus {
+  --bp-delay: 2220ms;
+}
+
+/*
+ * The headline is lettered rather than filled: outline only while the drawing
+ * is up, then the ink floods in. Both halves cross-fade — the stroke keeps its
+ * width through "resolving" and fades to transparent as the fill arrives, so
+ * the words never blink out between the two states.
+ */
+:global(html[data-bp="draft"]) .heading {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--bp-ink);
+}
+
+:global(html[data-bp="resolving"]) .heading {
+  -webkit-text-stroke: 1px transparent;
+}
+
+/* The sketch motifs read as line work too: no solid dots on a plan. */
+:global(html[data-bp="draft"]) .heroArt circle {
+  fill: transparent;
+  stroke: var(--bp-ink);
+  stroke-width: 1.5;
+}
+
+/* Same cross-fade as the headline: the outline dissolves as the fill arrives. */
+:global(html[data-bp="resolving"]) .heroArt circle {
+  stroke: transparent;
+  stroke-width: 1.5;
+}
+
+/*
+ * The oval is left alone: its stroke already follows --coral-700, so it draws
+ * itself on in pencil teal and then turns coral with everything else. Touching
+ * its stroke-dasharray here would collide with the draw animation above.
+ */
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-bp="draft"]) .heading {
+    color: var(--ink-900);
+    -webkit-text-stroke: 0;
+  }
+}

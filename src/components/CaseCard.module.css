@@ -5,6 +5,8 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--gap);
   align-items: center;
+  /* Anchors the blueprint plate bubble, which must not become a grid item. */
+  position: relative;
 }
 
 .content {
@@ -255,4 +257,106 @@
     animation-name: slide-in-short;
     animation-duration: 620ms;
   }
+}
+
+/* ── Blueprint reveal ──────────────────────────────────────────────────────
+   The card keeps every dimension it has when finished; only its colour and
+   line quality change, so nothing reflows when the drawing resolves.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Numbered the way rooms are numbered on a plan. Out of flow, so the two
+   column grid above is untouched. */
+.plate {
+  position: absolute;
+  left: -14px;
+  top: -14px;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--bp-ink);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--bp-ink);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+}
+
+:global(html[data-bp="draft"]) .plate {
+  opacity: 1;
+  visibility: visible;
+}
+
+:global(html[data-bp="resolving"]) .plate {
+  opacity: 0;
+  transition: opacity 200ms var(--ease-standard) var(--bp-delay, 0ms);
+}
+
+/* Pencil line quality: dashed where the finished card is solid. */
+:global(html[data-bp="draft"]) .visual,
+:global(html[data-bp="draft"]) .screen {
+  border-style: dashed;
+}
+
+:global(html[data-bp="draft"]) .visual.wip {
+  border-color: var(--bp-line);
+}
+
+/*
+ * Inset shadow rather than a real border, so the chips outline themselves
+ * without gaining a pixel of width.
+ */
+:global(html[data-bp="draft"]) .tag {
+  background: transparent;
+  color: var(--bp-ink);
+  box-shadow: inset 0 0 0 1px var(--bp-line);
+}
+
+:global(html[data-bp="draft"]) .screen .bar {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--bp-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate {
+    display: none;
+  }
+}
+
+/*
+ * Each card resolves through its own parts rather than in one beat: the plate
+ * bubble goes first, then the visual, then the copy down the column. Offsets
+ * are added to the base --bp-card-delay that page.module.css sets per card, so
+ * the whole page still reads as one front moving downward.
+ */
+:global(html[data-bp]) .case {
+  --bp-delay: var(--bp-card-delay, 0ms);
+}
+
+:global(html[data-bp]) .plate {
+  --bp-delay: var(--bp-card-delay, 0ms);
+}
+
+:global(html[data-bp]) .visual {
+  --bp-delay: calc(var(--bp-card-delay, 0ms) + 40ms);
+}
+
+:global(html[data-bp]) .tags {
+  --bp-delay: calc(var(--bp-card-delay, 0ms) + 100ms);
+}
+
+:global(html[data-bp]) .title {
+  --bp-delay: calc(var(--bp-card-delay, 0ms) + 150ms);
+}
+
+:global(html[data-bp]) .desc {
+  --bp-delay: calc(var(--bp-card-delay, 0ms) + 200ms);
+}
+
+:global(html[data-bp]) .linkRow {
+  --bp-delay: calc(var(--bp-card-delay, 0ms) + 250ms);
 }
