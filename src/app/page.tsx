@@ -109,51 +109,11 @@ export default function Home() {
             <a href="#">Paper Tots</a>
           </div>
         </div>
-        <div className={styles.heroArt}>
-          <svg width="100%" height="100%" viewBox="0 0 380 300" role="img">
-            <title>Hand-drawn motifs</title>
-            <desc>
-              Three ink-sketched icons using the real teal and coral tokens.
-            </desc>
-            <g transform="translate(90,80) rotate(-6)">
-              <path
-                d="M-42,-26 Q-44,-28 -40,-28 L40,-28 Q44,-28 42,-24 L44,24 Q44,28 40,28 L-40,28 Q-44,28 -42,24 Z"
-                fill="none"
-                stroke="var(--ink-900)"
-                strokeWidth="2"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M-13,-28 L-13,28"
-                stroke="var(--ink-900)"
-                strokeWidth="1.2"
-                strokeDasharray="2 5"
-              />
-              <circle cx="30" cy="-16" r="5" fill="var(--coral-700)" />
-            </g>
-            <g transform="translate(260,70) rotate(5)">
-              <path
-                d="M-40,-21 Q-43,-23 -39,-24 L37,-25 Q42,-24 41,-18 L42,9 Q41,15 35,15 L-7,16 L-19,30 L-17,15 L-37,15 Q-42,14 -40,8 Z"
-                fill="none"
-                stroke="var(--ink-900)"
-                strokeWidth="2"
-                strokeLinejoin="round"
-              />
-              <circle cx="26" cy="0" r="5" fill="var(--teal-700)" />
-            </g>
-            <g transform="translate(180,210) rotate(-3)">
-              <path
-                d="M-20,0 Q-22,4 -18,6 L-5,17 Q-1,19 1,15 L22,-19"
-                fill="none"
-                stroke="var(--ink-900)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <circle cx="26" cy="-22" r="5" fill="var(--cream-700)" />
-            </g>
-          </svg>
-        </div>
+        {/*
+          Decorative, and drawn entirely by page.module.css as a background so
+          the reduced-motion swap can be a plain media query. See .heroArt.
+        */}
+        <div className={styles.heroArt} aria-hidden="true" />
       </section>
 
       <section className={styles.cases}>
