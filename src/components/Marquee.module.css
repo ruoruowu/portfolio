@@ -1,0 +1,194 @@
+.marquee {
+  --gap: 10px;
+  /*
+   * The pills are meant to read as a longer list continuing past the frame, so
+   * the row is cut by a fade rather than a hard edge. Both properties are set:
+   * Safari still wants the prefix.
+   */
+  overflow: hidden;
+  -webkit-mask-image: var(--fade);
+  mask-image: var(--fade);
+}
+
+.track {
+  display: flex;
+  gap: 0;
+  animation: slide var(--duration) linear infinite;
+  /* Promotes the track once instead of on every frame of a 60s loop. */
+  will-change: transform;
+}
+
+.track[data-reverse] {
+  animation-direction: reverse;
+}
+
+/*
+ * Pausing on hover is what turns the row from decoration into something you
+ * can actually read: the pill you reached for stops where it is. Focus counts
+ * too — tabbing to a pill inside a moving row is otherwise unusable.
+ */
+.marquee:hover .track,
+.marquee:focus-within .track {
+  animation-play-state: paused;
+}
+
+.set {
+  display: flex;
+  gap: var(--gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Horizontal ───────────────────────────────────────────────────────── */
+
+.horizontal {
+  --fade: linear-gradient(
+    to right,
+    transparent,
+    #000 56px,
+    #000 calc(100% - 56px),
+    transparent
+  );
+}
+
+.horizontal .track {
+  flex-direction: row;
+  width: max-content;
+}
+
+/* The trailing gap belongs to the copy, so half the track is a clean loop. */
+.horizontal .set {
+  flex-direction: row;
+  padding-inline-end: var(--gap);
+}
+
+/* ── Vertical ─────────────────────────────────────────────────────────── */
+
+.vertical {
+  --fade: linear-gradient(
+    to bottom,
+    transparent,
+    #000 40px,
+    #000 calc(100% - 40px),
+    transparent
+  );
+
+  height: 100%;
+}
+
+.vertical .track {
+  flex-direction: column;
+  height: max-content;
+}
+
+.vertical .set {
+  flex-direction: column;
+  padding-block-end: var(--gap);
+}
+
+/*
+ * A horizontal row can let a long label run off the edge — that is the effect.
+ * A narrow column cannot: the fade runs top-to-bottom, so an over-long pill
+ * would be cut against a hard vertical edge instead. In the rail the pills
+ * take the rail's width and wrap.
+ */
+.vertical .pill {
+  white-space: normal;
+  font-size: 12px;
+  padding: 7px 12px 7px 10px;
+}
+
+@keyframes slide {
+  to {
+    /* Exactly one copy — the seam lands where the loop began. */
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.vertical .track {
+  animation-name: slideY;
+}
+
+@keyframes slideY {
+  to {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+/* ── The pill ─────────────────────────────────────────────────────────── */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  white-space: nowrap;
+  background: var(--bg-raised);
+  border: 1px solid var(--ink-200);
+  border-radius: 100px;
+  padding: 6px 14px 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ink-700);
+}
+
+/* Tool marks get the squircle of an app tile, not the circle of a bullet. */
+.mark {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--teal-500);
+  flex: none;
+}
+
+/*
+ * In the blueprint phase --teal-500 flattens to transparent, which would leave
+ * a hole where the bullet was. The drawn equivalent is an open circle.
+ */
+:global(html[data-bp]:not([data-bp="resolving"])) .dot {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--bp-rule);
+}
+
+/* An icon padded to 26px reads smaller than a 26px tile, so it carries none. */
+.pill:has(.mark) {
+  padding-left: 6px;
+}
+
+@media (max-width: 720px) {
+  .pill {
+    font-size: 12px;
+    padding: 5px 12px 5px 10px;
+  }
+}
+
+/*
+ * No sliding without consent. The duplicate copy is dropped (it exists only to
+ * make motion seamless) and the row becomes an ordinary scroller, so the rest
+ * of the list stays reachable by touch, wheel and keyboard.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+    overflow: auto;
+  }
+
+  .track {
+    animation: none;
+    will-change: auto;
+  }
+
+  .set[aria-hidden] {
+    display: none;
+  }
+}

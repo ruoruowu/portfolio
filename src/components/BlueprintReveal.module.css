@@ -12,10 +12,10 @@
   opacity: 0;
   visibility: hidden;
   font-family: var(--font-mono), monospace;
-  color: var(--bp-ink);
+  color: var(--bp-muted);
 }
 
-:global(html[data-bp="draft"]) .sheet {
+:global(html[data-bp]:not([data-bp="resolving"])) .sheet {
   opacity: 1;
   visibility: visible;
 }
@@ -53,7 +53,7 @@
 .frame {
   position: absolute;
   inset: 14px;
-  border: 1px solid var(--bp-ink);
+  border: 1px solid var(--bp-rule);
   outline: 1px solid var(--bp-faint);
   outline-offset: 4px;
 }
@@ -85,7 +85,7 @@
   transform: translate(-50%, -50%);
   width: 22px;
   height: 22px;
-  border: 1px solid var(--bp-ink);
+  border: 1px solid var(--bp-rule);
   border-radius: 50%;
   background: var(--paper);
   display: flex;
@@ -106,7 +106,7 @@
     calc(var(--page-max) - var(--page-gutter) * 2),
     calc(100vw - var(--page-gutter) * 2)
   );
-  border-top: 1px solid var(--bp-ink);
+  border-top: 1px solid var(--bp-rule);
   display: flex;
   justify-content: center;
 }
@@ -118,7 +118,7 @@
   top: -5px;
   width: 1px;
   height: 11px;
-  background: var(--bp-ink);
+  background: var(--bp-rule);
 }
 
 .widthDim::before {
@@ -142,7 +142,7 @@
   right: 30px;
   bottom: 30px;
   width: 210px;
-  border: 1px solid var(--bp-ink);
+  border: 1px solid var(--bp-rule);
   background: var(--paper);
   font-size: 9px;
   letter-spacing: 0.08em;
@@ -153,7 +153,7 @@
   justify-content: space-between;
   gap: 8px;
   padding: 6px 8px;
-  border-bottom: 1px solid var(--bp-line);
+  border-bottom: 1px solid var(--bp-faint);
 }
 
 .titleNote {

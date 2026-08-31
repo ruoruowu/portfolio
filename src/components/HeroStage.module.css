@@ -1,0 +1,164 @@
+/*
+ * Three dimensions for the length of the blueprint only. The stage owns the
+ * perspective; the two layers below it own their depth. Nothing here changes
+ * layout — the planes rotate about their own centres, so the finished hero is
+ * already in its final position while the sheet is still up.
+ */
+.stage {
+  perspective: 1400px;
+  perspective-origin: 50% 42%;
+}
+
+.layer {
+  /*
+   * --depth scales one shared pair of angles per plane, which is what makes
+   * the two move as one object seen in perspective rather than as two things
+   * that happen to be rotating.
+   */
+  --depth: 1;
+
+  /*
+   * A marquee track is `width: max-content` — the length of the whole list. In
+   * block layout `overflow: hidden` does not stop that from propagating up as
+   * an intrinsic width, so without this the hero's 1fr column sizes itself to
+   * the un-clipped tools row and blows past the page container.
+   */
+  min-width: 0;
+
+  transform-style: preserve-3d;
+  transform: rotateX(calc(var(--rx, 0deg) * var(--depth)))
+    rotateY(calc(var(--ry, 0deg) * var(--depth)))
+    translateZ(calc(var(--lift, 0px) * var(--depth)));
+  /* Resting duration: the ease back to flat when the sheet comes down. */
+  transition: transform 760ms var(--ease-standard);
+}
+
+/* Copy sits deeper in the box and moves less, so the text stays readable. */
+.copy {
+  --depth: 0.45;
+}
+
+.art {
+  --depth: 1;
+}
+
+/*
+ * The artwork and the vertical skills rail share the artwork's plane, so they
+ * tilt together as one object. `auto` on the rail lets the pills set their own
+ * width; the artwork takes the rest and may shrink, which is why it carries
+ * minmax(0, …) rather than 1fr.
+ */
+.artRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.artBox {
+  position: relative;
+}
+
+/* Tracking wants to feel attached to the pointer, not to catch up with it. */
+:global(html[data-bp]:not([data-bp="resolving"])) .layer {
+  transition: transform 320ms var(--ease-standard);
+}
+
+/*
+ * The opening angle. It is set here rather than in the component so the stage
+ * is already tilted on first paint, before any pointer has moved — and so a
+ * visitor who never moves the pointer still sees the sheet in three dimensions.
+ * The component's inline values override these while tracking.
+ */
+:global(html[data-bp]:not([data-bp="resolving"])) .stage {
+  --rx: 5deg;
+  --ry: -9deg;
+  --lift: 34px;
+}
+
+/* ── The artwork's stand-in ────────────────────────────────────────────────
+   A boxed, cross-ruled elevation: what a plan puts where art will go.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.plate {
+  position: absolute;
+  inset: 0;
+  border: 1px dashed var(--bp-rule);
+  border-radius: 2px;
+  background-image:
+    linear-gradient(
+      to top right,
+      transparent calc(50% - 0.5px),
+      var(--bp-faint) 50%,
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 0.5px),
+      var(--bp-faint) 50%,
+      transparent calc(50% + 0.5px)
+    );
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+:global(html[data-bp]:not([data-bp="resolving"])) .plate {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Struck at the same moment the colour starts arriving. */
+:global(html[data-bp="resolving"]) .plate {
+  visibility: visible;
+  opacity: 0;
+  transition:
+    opacity var(--bp-draw) var(--ease-standard),
+    visibility 0s linear var(--bp-draw);
+}
+
+.plateLabel {
+  position: absolute;
+  left: 0;
+  bottom: -20px;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--bp-muted);
+}
+
+@media (max-width: 720px) {
+  /* The artwork is hidden at this width, so its reservation goes too. */
+  .plate {
+    display: none;
+  }
+
+  /*
+   * The rail's height comes from the artwork beside it, and the artwork is
+   * gone at this width — so the column would collapse to nothing. The same
+   * skills already run in the band above the heading; one copy is enough.
+   */
+  .artRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*
+ * Reduced motion never enters the draft phase — the boot script skips it — so
+ * the stage would already be flat. Belt and braces, and it also covers a
+ * visitor who locks the sheet with the preference set.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .stage,
+  :global(html[data-bp]) .stage {
+    --rx: 0deg;
+    --ry: 0deg;
+    --lift: 0px;
+
+    perspective: none;
+  }
+
+  .layer {
+    transition: none;
+  }
+}

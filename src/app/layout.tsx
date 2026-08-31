@@ -48,6 +48,14 @@ const BOOT = `
 document.documentElement.classList.add("js");
 (function () {
   var r = document.documentElement;
+  // A held blueprint outranks the reveal: if the visitor asked for the sheet to
+  // stay up, restore it before paint and never run the timers below.
+  try {
+    if (sessionStorage.getItem("bp-lock") === "1") {
+      r.setAttribute("data-bp", "locked");
+      return;
+    }
+  } catch (e) {}
   var seen = false, reduce = false;
   try { seen = !!sessionStorage.getItem("bp-home"); } catch (e) {}
   try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
@@ -56,7 +64,9 @@ document.documentElement.classList.add("js");
   // means this visitor may see it again next time.
   try { sessionStorage.setItem("bp-home", "1"); } catch (e) {}
   r.setAttribute("data-bp", "draft");
-  var done = function () { r.removeAttribute("data-bp"); };
+  var done = function () {
+    if (r.getAttribute("data-bp") !== "locked") r.removeAttribute("data-bp");
+  };
   setTimeout(function () {
     if (r.getAttribute("data-bp") === "draft") r.setAttribute("data-bp", "resolving");
   }, ${HOLD});

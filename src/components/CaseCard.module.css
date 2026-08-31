@@ -21,11 +21,52 @@
   overflow-y: visible;
 }
 
+/*
+ * The cover is the card's other way in: same destination as "Learn more", so
+ * the whole plate is a target rather than a picture next to a link. It is the
+ * grid item now, so it carries no styling of its own beyond the hover.
+ */
+.visualLink {
+  display: block;
+  border-radius: var(--radius-card);
+  transition: transform var(--dur-standard) var(--ease-standard);
+}
+
+.visualLink:hover {
+  transform: translateY(-2px);
+}
+
 .visual {
   background: var(--teal-100);
   border: 1px solid var(--teal-300);
   border-radius: var(--radius-card);
   padding: 20px;
+}
+
+/*
+ * Real art sits flush to the card edge — the 20px inset frames the stand-in
+ * screen, and a screenshot reads better without it.
+ */
+.visual.covered {
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.wipBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--coral-100);
+  border: 1px solid #ebc3b4;
+  border-radius: 100px;
+  padding: 4px 10px;
 }
 
 .visual.wip {
@@ -117,7 +158,25 @@
 }
 
 .linkRow {
-  display: block;
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+
+/*
+ * Sits with the link rather than the tags: it answers "is this worth opening
+ * now", which is the same question the link is asking.
+ */
+.readTime {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--ink-500);
+}
+
+.readTime::before {
+  content: "·";
+  margin-right: 9px;
 }
 
 .link {
@@ -220,6 +279,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .visualLink,
+  .visualLink:hover {
+    transform: none;
+    transition: none;
+  }
+
   :global(html.js) .case,
   :global(html.js) .content > * {
     opacity: 1;
@@ -286,7 +351,7 @@
   visibility: hidden;
 }
 
-:global(html[data-bp="draft"]) .plate {
+:global(html[data-bp]:not([data-bp="resolving"])) .plate {
   opacity: 1;
   visibility: visible;
 }
@@ -297,26 +362,38 @@
 }
 
 /* Pencil line quality: dashed where the finished card is solid. */
-:global(html[data-bp="draft"]) .visual,
-:global(html[data-bp="draft"]) .screen {
+:global(html[data-bp]:not([data-bp="resolving"])) .visual,
+:global(html[data-bp]:not([data-bp="resolving"])) .screen {
   border-style: dashed;
 }
 
-:global(html[data-bp="draft"]) .visual.wip {
-  border-color: var(--bp-line);
+:global(html[data-bp]:not([data-bp="resolving"])) .visual.wip {
+  border-color: var(--bp-rule);
+}
+
+/*
+ * Photography has no line-quality equivalent, so the cover simply is not on
+ * the sheet yet — it arrives with the colour, on the visual's own delay.
+ */
+:global(html[data-bp]:not([data-bp="resolving"])) .cover {
+  opacity: 0;
+}
+
+:global(html[data-bp]) .cover {
+  transition: opacity var(--bp-draw) var(--ease-standard) var(--bp-delay, 0ms);
 }
 
 /*
  * Inset shadow rather than a real border, so the chips outline themselves
  * without gaining a pixel of width.
  */
-:global(html[data-bp="draft"]) .tag {
+:global(html[data-bp]:not([data-bp="resolving"])) .tag {
   background: transparent;
   color: var(--bp-ink);
-  box-shadow: inset 0 0 0 1px var(--bp-line);
+  box-shadow: inset 0 0 0 1px var(--bp-rule);
 }
 
-:global(html[data-bp="draft"]) .screen .bar {
+:global(html[data-bp]:not([data-bp="resolving"])) .screen .bar {
   background: transparent;
   box-shadow: inset 0 0 0 1px var(--bp-line);
 }

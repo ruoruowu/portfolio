@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!--
+    Placeholder, not a logo. Same cross-ruled box the blueprint uses to reserve
+    room for art that is not drawn yet. Drop the real mark in over this file,
+    keep the filename, and the tools marquee picks it up with no code change.
+  -->
+  <rect x="1.5" y="1.5" width="21" height="21" rx="4"
+        stroke="#245e5b" stroke-opacity="0.5" stroke-dasharray="2.5 2" />
+  <path d="M1.5 1.5 22.5 22.5M22.5 1.5 1.5 22.5"
+        stroke="#245e5b" stroke-opacity="0.18" />
+</svg>

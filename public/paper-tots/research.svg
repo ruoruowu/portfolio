@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Placeholder for the user research visual">
+  <defs><pattern id="h1650" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+    <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(36,94,91,0.10)" stroke-width="3"/></pattern></defs>
+  <rect width="1200" height="900" fill="#fff6d9"/><rect width="1200" height="900" fill="url(#h1650)"/>
+  <rect x="10" y="10" width="1180" height="880" fill="none" stroke="#245e5b" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="10 7" rx="10"/>
+  <text x="600" y="324" text-anchor="middle" font-family="Gabarito, Verdana, sans-serif" font-size="42" font-weight="700" fill="#245e5b">SLOT 02</text>
+  <text x="600" y="382" text-anchor="middle" font-family="Verdana, sans-serif" font-size="27" fill="#c0431f">Deck slide 3 — User interview</text>
+  <text x="600" y="446" text-anchor="middle" font-family="Verdana, sans-serif" font-size="27" fill="#3a4043" fill-opacity="0.82">Interview guide and a recorded shadowing session. Substantiates the User</text>
+  <text x="600" y="489" text-anchor="middle" font-family="Verdana, sans-serif" font-size="27" fill="#3a4043" fill-opacity="0.82">research chip.</text>
+  <text x="600" y="878" text-anchor="middle" font-family="Verdana, sans-serif" font-size="19" fill="#245e5b" fill-opacity="0.5">1200 x 900  ·  PLACEHOLDER — export this slide from the deck</text>
+</svg>

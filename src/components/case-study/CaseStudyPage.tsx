@@ -2,13 +2,21 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import ParallaxHero from "./ParallaxHero";
+import ReferenceVideo from "./ReferenceVideo";
 import styles from "./CaseStudyPage.module.css";
 
 export interface CaseStudyReference {
+  /** The image, or the poster frame when `video` is set. */
   src: string;
   alt: string;
   label?: string;
   wide?: boolean;
+  /**
+   * An mp4 to play in place of the still. Some references only argue in
+   * motion — an animation iterating, a page turning — and a frame of them
+   * argues nothing. `src` becomes the poster.
+   */
+  video?: string;
 }
 
 export interface CaseStudyData {
@@ -27,6 +35,8 @@ export interface CaseStudyData {
   decisions: { heading: string; text: string }[];
   references?: CaseStudyReference[];
   learnings?: string[];
+  /** Defaults to "What I learned"; a project still in flight wants a different tense. */
+  learningsLabel?: string;
   closingLabel: string;
   closingText: string;
   cta: { href: string; label: string };
@@ -131,7 +141,19 @@ export default function CaseStudyPage({ data }: { data: CaseStudyData }) {
                 key={item.src}
                 className={`${styles.referenceCard} ${item.wide ? styles.wide : ""}`}
               >
-                <img src={item.src} alt={item.alt} className={styles.referenceImage} />
+                {item.video ? (
+                  <ReferenceVideo
+                    src={item.video}
+                    poster={item.src}
+                    className={styles.referenceImage}
+                  />
+                ) : (
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    className={styles.referenceImage}
+                  />
+                )}
                 {item.label && (
                   <figcaption className={styles.referenceLabel}>{item.label}</figcaption>
                 )}
@@ -143,7 +165,9 @@ export default function CaseStudyPage({ data }: { data: CaseStudyData }) {
 
       {data.learnings && (
         <section className={styles.learningsSection}>
-          <div className={styles.learningsLabel}>What I learned</div>
+          <div className={styles.learningsLabel}>
+            {data.learningsLabel ?? "What I learned"}
+          </div>
           <div className={styles.learningsList}>
             {data.learnings.map((item) => (
               <p key={item} className={styles.learningItem}>

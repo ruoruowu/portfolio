@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Source assets. Working files only — the exports that ship live in /public.
+# 77MB of .mov and full-res PNG has no business in a clone of this site.
+/Assets

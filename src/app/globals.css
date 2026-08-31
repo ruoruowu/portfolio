@@ -71,11 +71,18 @@ a {
    ───────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* One teal, at the weights a drafting pen would give it. */
+  /*
+   * One teal, at the weights a drafting pen would give it. Only lettering is
+   * inked at full strength — every drawn line sits well below it, the way a
+   * hard pencil sits under the pen on a real sheet. The four line weights are
+   * one ramp: rule (what the drawing is made of), line (secondary and grid
+   * majors), faint (grid minors), and they never invent a second hue.
+   */
   --bp-ink: var(--teal-700);
-  --bp-muted: rgba(36, 94, 91, 0.62);
-  --bp-line: rgba(36, 94, 91, 0.42);
-  --bp-faint: rgba(36, 94, 91, 0.16);
+  --bp-muted: rgba(36, 94, 91, 0.4);
+  --bp-rule: rgba(36, 94, 91, 0.26);
+  --bp-line: rgba(36, 94, 91, 0.14);
+  --bp-faint: rgba(36, 94, 91, 0.05);
   --bp-draw: 260ms;
 }
 
@@ -85,9 +92,14 @@ a {
  * here touches geometry, so the finished layout is already in its final
  * position while the plan is still up — the resolve is pure colour.
  */
-html[data-bp="draft"] {
+html[data-bp="draft"],
+/*
+ * The CTA in the hero holds this one indefinitely. Same palette, but it never
+ * advances to "resolving", so the sheet stays up until the visitor dismisses it.
+ */
+html[data-bp="locked"] {
   --teal-100: transparent;
-  --teal-300: var(--bp-line);
+  --teal-300: var(--bp-rule);
   --teal-500: transparent;
   --teal-700: #245e5b;
   --teal-900: #245e5b;
@@ -98,8 +110,8 @@ html[data-bp="draft"] {
   --coral-700: #245e5b;
   --ink-900: #245e5b;
   --ink-700: #245e5b;
-  --ink-500: rgba(36, 94, 91, 0.62);
-  --ink-200: rgba(36, 94, 91, 0.42);
+  --ink-500: var(--bp-muted);
+  --ink-200: var(--bp-line);
   --bg-raised: transparent;
 }
 
@@ -110,10 +122,10 @@ html[data-bp="draft"] {
  * set — roughly 1.9s — and disappears with the attribute, so it never sits on
  * top of the page's own hover transitions.
  */
-html[data-bp] body,
-html[data-bp] body *,
-html[data-bp] body *::before,
-html[data-bp] body *::after {
+html[data-bp]:not([data-bp="locked"]) body,
+html[data-bp]:not([data-bp="locked"]) body *,
+html[data-bp]:not([data-bp="locked"]) body *::before,
+html[data-bp]:not([data-bp="locked"]) body *::after {
   transition:
     color var(--bp-draw) var(--ease-standard) var(--bp-delay, 0ms),
     background-color var(--bp-draw) var(--ease-standard) var(--bp-delay, 0ms),
@@ -137,10 +149,10 @@ html[data-bp] body [data-bp-sheet] * {
  * finished. This is the belt-and-braces half of that.
  */
 @media (prefers-reduced-motion: reduce) {
-  html[data-bp] body,
-  html[data-bp] body *,
-  html[data-bp] body *::before,
-  html[data-bp] body *::after {
+  html[data-bp]:not([data-bp="locked"]) body,
+  html[data-bp]:not([data-bp="locked"]) body *,
+  html[data-bp]:not([data-bp="locked"]) body *::before,
+  html[data-bp]:not([data-bp="locked"]) body *::after {
     transition: none;
   }
 }

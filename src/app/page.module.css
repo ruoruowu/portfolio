@@ -1,11 +1,36 @@
+/* ── Skills band ──────────────────────────────────────────────────────────
+   Full-bleed on purpose: it is the only element on the page that ignores
+   --page-max. A row that stopped at the container would read as a list that
+   happens to be clipped; running it off both edges of the viewport is what
+   says the list continues.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.skillBand {
+  border-top: 1px solid var(--ink-200);
+  border-bottom: 1px solid var(--ink-200);
+  padding: 14px 0;
+}
+
 .hero {
   max-width: var(--page-max);
   margin: 0 auto;
-  padding: 56px var(--page-gutter) 88px;
+  padding: 44px var(--page-gutter) 88px;
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  /*
+   * Slightly evener than it was: the right column now carries the artwork and
+   * the rail side by side, and at 1.2fr the artwork was the part that paid.
+   * minmax(0, …) rather than a bare fr because a track's default minimum is
+   * min-content, and the marquees inside are as wide as their whole list.
+   */
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: 32px;
   align-items: center;
+
+  /*
+   * The artwork and the rail beside it are the same height by definition, so
+   * the height is named once here rather than set on each of them.
+   */
+  --art-h: 300px;
 }
 
 .heading {
@@ -61,7 +86,8 @@
   align-items: center;
 }
 
-.heroLinks a {
+.heroLinks a,
+.heroLinks button {
   color: var(--teal-700);
   font-size: 15px;
   font-weight: 500;
@@ -70,15 +96,65 @@
   transition: all var(--dur-standard) var(--ease-standard);
 }
 
-.heroLinks a:hover {
+/* The toggle is a button for the semantics, not the chrome. */
+.heroLinks button {
+  font-family: inherit;
+  background: none;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  padding-inline: 0;
+  cursor: pointer;
+}
+
+.heroLinks a:hover,
+.heroLinks button:hover {
   border-color: var(--teal-900);
   color: var(--teal-900);
 }
 
+.heroLinks button:focus-visible {
+  outline: 2px solid var(--teal-700);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 .heroArt {
   position: relative;
-  height: 320px;
+  height: var(--art-h);
   background: url("/web-designing.svg") center / contain no-repeat;
+}
+
+/*
+ * The second axis of the L. Same list as the band above the heading, running
+ * the other way and at the artwork's depth, so the hero is framed on its top
+ * and right edges by the same material.
+ */
+.rail {
+  width: 138px;
+  /*
+   * Definite, not 100%: the row is auto-sized, so a percentage would resolve
+   * against a row the rail is itself defining — and the rail's content is the
+   * full 20-pill column, which would make the hero a screen and a half tall.
+   */
+  height: var(--art-h);
+}
+
+/* ── Tools ────────────────────────────────────────────────────────────────
+   Sits under the artwork, counter-scrolling against the rail beside it.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.tools {
+  margin-top: 18px;
+}
+
+.toolsLabel {
+  display: block;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--ink-500);
+  margin-bottom: 8px;
 }
 
 /*
@@ -141,6 +217,18 @@
     display: none;
   }
 
+  /*
+   * The rail takes its height from the artwork beside it, which is gone here —
+   * and the same skills already run in the band above the heading.
+   */
+  .rail {
+    display: none;
+  }
+
+  .tools {
+    margin-top: 0;
+  }
+
   .heading {
     font-size: 36px;
   }
@@ -158,6 +246,11 @@
    the page as one continuous front.
    ───────────────────────────────────────────────────────────────────────── */
 
+/* The band sits above the heading, so the wash reaches it first. */
+:global(html[data-bp]) .skillBand {
+  --bp-delay: 0ms;
+}
+
 :global(html[data-bp]) .heading {
   --bp-delay: 120ms;
 }
@@ -172,6 +265,14 @@
 
 :global(html[data-bp]) .heroArt {
   --bp-delay: 560ms;
+}
+
+:global(html[data-bp]) .rail {
+  --bp-delay: 600ms;
+}
+
+:global(html[data-bp]) .tools {
+  --bp-delay: 680ms;
 }
 
 /*
@@ -208,14 +309,23 @@
 }
 
 /*
- * The headline is lettered rather than filled: outline only while the drawing
- * is up, then the ink floods in. Both halves cross-fade — the stroke keeps its
- * width through "resolving" and fades to transparent as the fill arrives, so
- * the words never blink out between the two states.
+ * `[data-bp]:not([data-bp="resolving"])` is "the sheet is up" — the timed draft
+ * and the held one both. Every rule that draws the page in pencil is written
+ * this way, so locking the sheet can never leave half the page in colour.
+ *
+ * The headline is lettered rather than filled: outline while the sheet is up,
+ * then the ink floods in. Both
+ * halves cross-fade: the stroke keeps its width through "resolving" and fades
+ * to transparent as the fill arrives, so the words never blink out between the
+ * two states.
+ *
+ * Stroke sits at rule weight, not full ink. At 52px the counters carry the
+ * word shapes on their own, so the lettering can be as light as the rest of
+ * the line work and still read.
  */
-:global(html[data-bp="draft"]) .heading {
+:global(html[data-bp]:not([data-bp="resolving"])) .heading {
   color: transparent;
-  -webkit-text-stroke: 1px var(--bp-ink);
+  -webkit-text-stroke: 1px var(--bp-muted);
 }
 
 :global(html[data-bp="resolving"]) .heading {
@@ -227,7 +337,7 @@
  * it is raster-flat vector art, not tokens, so no colour override reaches it.
  * It stays off the sheet and arrives with the rest of the colour instead.
  */
-:global(html[data-bp="draft"]) .heroArt {
+:global(html[data-bp]:not([data-bp="resolving"])) .heroArt {
   opacity: 0;
 }
 
@@ -243,7 +353,7 @@
  */
 
 @media (prefers-reduced-motion: reduce) {
-  :global(html[data-bp="draft"]) .heading {
+  :global(html[data-bp]:not([data-bp="resolving"])) .heading {
     color: var(--ink-900);
     -webkit-text-stroke: 0;
   }
