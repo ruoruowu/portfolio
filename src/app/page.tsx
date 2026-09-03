@@ -4,6 +4,7 @@ import BlueprintToggle from "@/components/BlueprintToggle";
 import CaseCard, { type CaseCardProps } from "@/components/CaseCard";
 import HeroStage from "@/components/HeroStage";
 import Marquee, { type MarqueeItem } from "@/components/Marquee";
+import CompanyLink, { type Company } from "@/components/CompanyLink";
 import styles from "./page.module.css";
 
 /*
@@ -138,6 +139,36 @@ const BAND_SECONDS = 72;
 const RAIL_SECONDS = 40;
 const TOOLS_SECONDS = 24;
 
+/*
+ * The preview images are homepage screenshots captured at 1280x720 on
+ * 2026-09-02 and scaled to 640px wide. They will drift as those sites are
+ * redesigned — re-capture rather than let a stale one sit here. The marks are
+ * each site's own favicon.
+ */
+const COMPANIES: Record<string, Company> = {
+  expedia: {
+    name: "Expedia Group",
+    href: "https://www.expediagroup.com",
+    icon: "/companies/expedia-icon.png",
+    preview: "/companies/expedia.jpg",
+    blurb: "The travel platform behind Expedia, Vrbo, and Hotels.com",
+  },
+  ey: {
+    name: "EY",
+    href: "https://www.ey.com",
+    icon: "/companies/ey-icon.png",
+    preview: "/companies/ey.jpg",
+    blurb: "Global professional services, consulting, and strategy",
+  },
+  paperTots: {
+    name: "Paper Tots",
+    href: "https://papertots.com",
+    icon: "/companies/papertots-icon.svg",
+    preview: "/companies/papertots.jpg",
+    blurb: "AI storybooks for the kid you know best",
+  },
+};
+
 export default function Home() {
   return (
     <>
@@ -194,8 +225,9 @@ export default function Home() {
         <p className={styles.subtext}>
           Designer, researcher, and product leader of 7 years and $60M+
           impact shipping app and web experiences. AI-fluent, focused on
-          conversion and growth at Expedia Group, EY, and Pop Social. Solo
-          founding designer of Paper Tots.
+          conversion and growth at <CompanyLink company={COMPANIES.expedia} />{" "}
+          and <CompanyLink company={COMPANIES.ey} />. Solo founding designer of{" "}
+          <CompanyLink company={COMPANIES.paperTots} />.
         </p>
         <div className={styles.heroLinks}>
           <a
@@ -212,12 +244,11 @@ export default function Home() {
           >
             LinkedIn
           </a>
-          <a href="#">Paper Tots</a>
           <BlueprintToggle />
         </div>
       </HeroStage>
 
-      <section className={styles.cases}>
+      <section id="work" className={styles.cases}>
         {CASES.map((c, i) => (
           <CaseCard key={c.title} {...c} plate={i + 1} />
         ))}

@@ -1,0 +1,9 @@
+{
+  "name": "Case Study Plates",
+  "id": "ruochenwu-case-study-plates",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": { "allowedDomains": ["none"] }
+}

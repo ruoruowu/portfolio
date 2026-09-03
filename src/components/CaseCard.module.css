@@ -50,23 +50,12 @@
 .visual.covered {
   padding: 0;
   overflow: hidden;
-  position: relative;
 }
 
 .cover {
   display: block;
   width: 100%;
   height: auto;
-}
-
-.wipBadge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: var(--coral-100);
-  border: 1px solid #ebc3b4;
-  border-radius: 100px;
-  padding: 4px 10px;
 }
 
 .visual.wip {

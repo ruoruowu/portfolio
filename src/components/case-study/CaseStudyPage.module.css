@@ -60,6 +60,57 @@
   padding: 24px var(--page-gutter) 0;
 }
 
+/*
+ * Status and live link share a row: both are facts about the project rather
+ * than about the case, and the badge's own bottom margin moves up here so the
+ * pair sits on one baseline.
+ */
+.heroMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/*
+ * Teal-700 rather than the palette's lighter teals so the dot and the border
+ * survive the blueprint phase, where --teal-100/300/500 are deliberately
+ * flattened to transparent.
+ */
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--teal-700);
+  padding: 5px 13px;
+  border: 1px solid var(--teal-300);
+  border-radius: 999px;
+  transition:
+    color var(--dur-standard) var(--ease-standard),
+    border-color var(--dur-standard) var(--ease-standard),
+    background-color var(--dur-standard) var(--ease-standard);
+}
+
+.live:hover {
+  color: var(--teal-900);
+  border-color: var(--teal-700);
+  background: var(--teal-100);
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal-700);
+}
+
+.liveArrow {
+  font-size: 11px;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -70,7 +121,6 @@
   border-radius: 100px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-bottom: 20px;
 }
 
 .badge.coral {

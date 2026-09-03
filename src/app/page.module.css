@@ -74,9 +74,15 @@
 
 .subtext {
   font-size: 17px;
-  line-height: 1.6;
+  /*
+   * Looser than prose would normally want, because three company pills sit in
+   * these lines. At 1.6 the pills nearly filled their line boxes and the rows
+   * closed up around them; the extra leading is what keeps the paragraph
+   * reading as text with objects in it rather than as a stack of chips.
+   */
+  line-height: 1.8;
   color: var(--ink-500);
-  max-width: 440px;
+  max-width: 462px;
   margin: 0 0 28px;
 }
 
@@ -169,6 +175,8 @@
 }
 
 .cases {
+  /* Anchor target for the nav's Portfolio link: stop just above card one. */
+  scroll-margin-top: 32px;
   max-width: var(--page-max);
   margin: 0 auto;
   padding: 0 var(--page-gutter) 96px;

@@ -204,6 +204,7 @@ const data: CaseStudyData = {
   closingText:
     "Paper Tots is in active development. These decisions are grounded in user research and product judgment, but not yet validated with usage data, that part is still ahead.",
   cta: { href: "/", label: "Back to all work" },
+  liveSite: { href: "https://papertots.com", label: "PaperTots.com" },
 };
 
 export default function PaperTots() {

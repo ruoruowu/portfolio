@@ -40,14 +40,41 @@ export interface CaseStudyData {
   closingLabel: string;
   closingText: string;
   cta: { href: string; label: string };
+  /**
+   * A shipped, public URL for this project. Sits with the status badge at the
+   * top of the hero: it belongs to this project, not to the site around it.
+   */
+  liveSite?: { href: string; label: string };
 }
 
 export default function CaseStudyPage({ data }: { data: CaseStudyData }) {
   const intro = (
     <>
-      <span className={`${styles.badge} ${styles[data.badgeTone]}`}>
-        {data.badge}
-      </span>
+      <div className={styles.heroMeta}>
+        <span className={`${styles.badge} ${styles[data.badgeTone]}`}>
+          {data.badge}
+        </span>
+        {/*
+          The one link in the hero that leaves the portfolio, so it is styled
+          as a destination rather than as body copy. The dot carries "live"
+          visually; the label carries it for anyone not seeing the dot.
+        */}
+        {data.liveSite && (
+          <a
+            href={data.liveSite.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.live}
+            aria-label={`${data.liveSite.label} — live site, opens in a new tab`}
+          >
+            <span className={styles.liveDot} aria-hidden="true" />
+            {data.liveSite.label}
+            <span className={styles.liveArrow} aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        )}
+      </div>
       <h1 className={styles.title}>{data.title}</h1>
       <p className={styles.roleLine}>{data.roleLine}</p>
       <div className={styles.chips}>

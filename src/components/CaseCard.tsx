@@ -63,14 +63,12 @@ export default function CaseCard({
             .join(" ")}
         >
           {cover ? (
-            <>
-              <img src={cover.src} alt={cover.alt} className={styles.cover} />
-              {status === "wip" && (
-                <span className={`${styles.wipLabel} ${styles.wipBadge}`}>
-                  In active development
-                </span>
-              )}
-            </>
+            /*
+             * No status badge over real art. The card's tags and the case
+             * page's own badge already carry that, and a pill sitting on the
+             * screenshot only competes with it.
+             */
+            <img src={cover.src} alt={cover.alt} className={styles.cover} />
           ) : status === "wip" ? (
             <span className={styles.wipLabel}>In active development</span>
           ) : (

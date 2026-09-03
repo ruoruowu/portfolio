@@ -42,6 +42,14 @@
 
 html {
   height: 100%;
+  /* In-page jumps travel, so the reader keeps their bearings. */
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 html,

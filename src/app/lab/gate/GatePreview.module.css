@@ -1,0 +1,155 @@
+/* Preview furniture only — none of this ships with a real gate. */
+
+.bar {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: calc(100vw - 32px);
+  padding: 10px 10px 10px 12px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-hairline);
+  border-radius: 100px;
+  box-shadow: 0 12px 32px -20px rgba(25, 28, 30, 0.5);
+}
+
+.switcher {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--bg-page);
+  border-radius: 100px;
+}
+
+.switcher button {
+  font-family: var(--font-body), sans-serif;
+  font-size: 13px;
+  color: var(--fg-muted);
+  background: none;
+  border: 0;
+  border-radius: 100px;
+  padding: 7px 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--dur-standard) var(--ease-standard);
+}
+
+.switcher button:hover {
+  color: var(--fg-default);
+}
+
+.switcher button.on {
+  background: var(--teal-700);
+  color: #fff;
+}
+
+.note {
+  margin: 0;
+  max-width: 300px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--fg-muted);
+}
+
+.replay {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--teal-700);
+  background: none;
+  border: 1px solid var(--ink-200);
+  border-radius: 100px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all var(--dur-standard) var(--ease-standard);
+}
+
+.replay:hover {
+  border-color: var(--teal-700);
+  color: var(--teal-900);
+}
+
+@media (max-width: 720px) {
+  .note {
+    display: none;
+  }
+
+  .switcher button {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+}
+
+/* The stand-in for whatever the gate is actually protecting. */
+.unlocked {
+  display: grid;
+  place-content: center;
+  justify-items: start;
+  gap: 4px;
+  min-height: 100dvh;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter) 120px;
+  animation: settle 420ms var(--ease-standard) both;
+}
+
+.stampLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: var(--teal-100);
+  color: var(--teal-700);
+}
+
+.unlocked h1 {
+  font-family: var(--font-display), sans-serif;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+  margin: 14px 0 8px;
+}
+
+.unlocked p {
+  max-width: 460px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg-muted);
+  margin: 0 0 22px;
+}
+
+.unlocked button {
+  font-family: var(--font-body), sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--teal-700);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--ink-200);
+  padding: 0 0 2px;
+  cursor: pointer;
+}
+
+.unlocked button:hover {
+  color: var(--teal-900);
+  border-color: var(--teal-900);
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unlocked {
+    animation: none;
+  }
+}
